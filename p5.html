@@ -32,7 +32,25 @@
         v: {dX: 1, dY: 1}, //speed (deltyX, deltaY)
       }
 
+      const bricks = {
+        w: 30,
+        h: 10,
+        positions: []
+      };
+
       function setup() {
+
+        const offsetX = 55;
+        const offsetY = 40;
+        for (let iX = 0; iX < 10; iX++) {
+            for (let iY = 0; iY < 5; iY++) {
+              bricks.positions.push({
+                x: offsetX + iX * 31,
+                y:  offsetY + iY * 11
+              });
+            }
+        }
+
         createCanvas(canvas.w, canvas.h);
       }
 
@@ -52,12 +70,15 @@
       }
 
       function drawBricks(){
-        const offsetX = 40;
-        const offsetY = 40;
-        for (let iX = 0; iX < 10; iX++) {
-            for (let iY = 0; iY < 5; iY++) {
-              rect(offsetX + iX * 31, offsetY + iY * 11, 30, 10);//x,y, w,h
-            }
+        const xOffset = bricks.w / 2;
+        const yOffset = bricks.h / 2;
+
+        for (let idx = 0; idx < bricks.positions.length; idx++) {
+            rect(
+              bricks.positions[idx].x - xOffset, 
+              bricks.positions[idx].y - xOffset, 
+              30, 
+              10);//x,y, w,h
         }
       }
 
@@ -107,7 +128,7 @@
           newY = (canvas.h/2 - r);
           newX = (canvas.w/2 - r);
           ball.v.dY = 1; 
-          ball.v.dx = 1; 
+          ball.v.dX = 1; 
         }
 
         //detect bar collsion
@@ -120,6 +141,54 @@
         }
 
         //detect brick collision
+        const bricksXOffset = bricks.w /2;
+        const bricksYOffset = bricks.h /2;
+        for (let idx = 0; idx < bricks.positions.length; idx++) {
+          let p = bricks.positions[idx];
+          if(ball.x > (p.x + bricksXOffset)){
+            continue;
+          }
+          if(ball.x < (p.x - bricksXOffset)){
+            continue;
+          }
+          if(ball.y > (p.y + bricksYOffset)){
+            continue;
+          }
+          if(ball.y < (p.y - bricksYOffset)){
+            continue;
+          }
+
+          //change speeed
+          var cX = p.x - newX;
+          var cY = p.y - newY;
+
+          //collion right
+          if(cX > bricks.w * 0.4){
+            console.log(1);
+              ball.v.dX *= -1; 
+          }
+          //collission left
+          else if(abs(cX) > bricks.w * 0.4){
+            console.log(2);
+              ball.v.dX *= -1;
+          }
+          else if(cY > bricks.h * 0.3){
+            console.log(3);
+              ball.v.dY *= -1; 
+          }
+          //collission left
+          else if(abs(cY) > bricks.h * 0.3){
+            console.log(4);
+              ball.v.dY *= -1;
+          } else {
+            ball.v.dY *=-1
+            ball.v.dX *=-1
+          }
+
+          //remove brick
+          bricks.positions.splice(idx, 1)
+          break;
+        }
 
         ball.x = newX;
         ball.y = newY;
