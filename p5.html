@@ -12,8 +12,28 @@
 
     <script src="https://cdn.jsdelivr.net/npm/p5@1.8.0/lib/p5.js"></script>
     <script>
+
+      const canvas = {
+        w: 400,
+        h: 400
+      }
+
+      const bar = {
+        h: 10,
+        w: 50,
+        y: 390, 
+        x: 200
+      }
+
+      const ball = {
+        d: 10,
+        x: 200, 
+        y: 300,
+        v: {dX: 1, dY: -1}, //speed (deltyX, deltaY)
+      }
+
       function setup() {
-        createCanvas(400, 400);
+        createCanvas(canvas.w, canvas.h);
       }
 
       function draw() {
@@ -24,6 +44,7 @@
         stroke(0);
 
         updateBar();
+        animateBall();
 
         drawBar();
         drawBall();
@@ -40,12 +61,7 @@
         }
       }
 
-      const bar = {
-        h: 10,
-        w: 50,
-        y: 390, 
-        x: 200
-      }
+      
 
       function updateBar(){
         if (keyIsDown(LEFT_ARROW)) {
@@ -59,14 +75,52 @@
         if (keyIsDown(RIGHT_ARROW)) {
           bar.x += 5;
 
-          if((bar.x + (bar.w/2)) > 400){
-            bar.x = 400 - bar.w/2;
+          if((bar.x + (bar.w/2)) > canvas.w){
+            bar.x = canvas.w - bar.w/2;
           }
         }
       }
 
+      function animateBall(){
+        let newX = ball.x + ball.v.dX;
+        let newY = ball.y + ball.v.dY;
+
+        const r = ball.d / 2;
+        //detect wall collision
+        //right
+        if(newX + r >= canvas.w){
+          newX = (canvas.w - r);
+          ball.v.dX *= -1; 
+        }
+        //left
+        else if(newX - r <= 0){
+          newX = 0 + r;
+          ball.v.dX *= -1; 
+        }
+        //top
+        if(newY - r <= 0){
+          newY = 0 + r;
+          ball.v.dY *= -1; 
+        }
+        //buttom
+        else if(newY + r >= canvas.h){
+          newY = (canvas.h/2 - r);
+          newX = (canvas.w/2 - r);
+          ball.v.dY = 1; 
+          ball.v.dx = 1; 
+        }
+        
+
+        //detect bar collsion
+
+        //detect brick collision
+
+        ball.x = newX;
+        ball.y = newY;
+      }
+
       function drawBall(){
-        circle(200, 300, 10);//x,y, d
+        circle(ball.x - (ball.d / 2),  ball.y - (ball.d/2), ball.d);//x,y, d
       }
 
       function drawBar(){
