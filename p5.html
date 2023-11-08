@@ -29,7 +29,7 @@
         d: 10,
         x: 200, 
         y: 300,
-        v: {dX: 1, dY: -1}, //speed (deltyX, deltaY)
+        v: {dX: 1, dY: 1}, //speed (deltyX, deltaY)
       }
 
       function setup() {
@@ -109,9 +109,15 @@
           ball.v.dY = 1; 
           ball.v.dx = 1; 
         }
-        
 
         //detect bar collsion
+        if(ball.y > bar.y){
+          const barHalf = bar.w / 2;
+          if(ball.x > (bar.x - barHalf) && ball.x < (bar.x + barHalf)){
+            ball.v.dY *= -1;
+            newY = bar.y;
+          }
+        }
 
         //detect brick collision
 
