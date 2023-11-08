@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>p5 1x1</title>
+  </head>
+  <body>
+    <h1>p5.js</h1>
+    <a href="https://p5js.org/" target="_blank">p5js.org</a>
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.8.0/lib/p5.js"></script>
+    <script>
+      function setup() {
+        createCanvas(400, 400);
+      }
+
+      function draw() {
+        
+        background(247, 247, 255);
+
+        fill(255);
+        stroke(0);
+
+        drawBar();
+        drawBall();
+        drawBricks();
+      }
+
+      function drawBricks(){
+        const offsetX = 40;
+        const offsetY = 40;
+        for (let iX = 0; iX < 10; iX++) {
+            for (let iY = 0; iY < 5; iY++) {
+              rect(offsetX + iX * 31, offsetY + iY * 11, 30, 10);//x,y, w,h
+            }
+        }
+      }
+
+      function drawBall(){
+        circle(200, 300, 10);//x,y, d
+      }
+
+      function drawBar(){
+        rect(200, 380, 50, 10);//x,y, w,h
+      }
+    </script>
+  </body>
+</html>
