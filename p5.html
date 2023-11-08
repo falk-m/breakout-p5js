@@ -23,6 +23,8 @@
         fill(255);
         stroke(0);
 
+        updateBar();
+
         drawBar();
         drawBall();
         drawBricks();
@@ -38,12 +40,37 @@
         }
       }
 
+      const bar = {
+        h: 10,
+        w: 50,
+        y: 390, 
+        x: 200
+      }
+
+      function updateBar(){
+        if (keyIsDown(LEFT_ARROW)) {
+          bar.x -= 5;
+
+          if((bar.x - (bar.w/2)) < 0){
+            bar.x = bar.w/2;
+          }
+        }
+
+        if (keyIsDown(RIGHT_ARROW)) {
+          bar.x += 5;
+
+          if((bar.x + (bar.w/2)) > 400){
+            bar.x = 400 - bar.w/2;
+          }
+        }
+      }
+
       function drawBall(){
         circle(200, 300, 10);//x,y, d
       }
 
       function drawBar(){
-        rect(200, 380, 50, 10);//x,y, w,h
+        rect(bar.x - (bar.w/2), bar.y - (bar.h/2), bar.w, bar.h);//x,y, w,h
       }
     </script>
   </body>
