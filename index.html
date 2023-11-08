@@ -46,7 +46,8 @@
             for (let iY = 0; iY < 5; iY++) {
               bricks.positions.push({
                 x: offsetX + iX * 31,
-                y:  offsetY + iY * 11
+                y:  offsetY + iY * 11,
+                color: Math.round(Math.random() * 255)
               });
             }
         }
@@ -58,9 +59,6 @@
         
         background(247, 247, 255);
 
-        fill(255);
-        stroke(0);
-
         updateBar();
         animateBall();
 
@@ -70,15 +68,18 @@
       }
 
       function drawBricks(){
+
         const xOffset = bricks.w / 2;
         const yOffset = bricks.h / 2;
 
         for (let idx = 0; idx < bricks.positions.length; idx++) {
+
+            fill(bricks.positions[idx].color);
             rect(
               bricks.positions[idx].x - xOffset, 
               bricks.positions[idx].y - xOffset, 
-              30, 
-              10);//x,y, w,h
+              bricks.w, 
+              bricks.h);//x,y, w,h
         }
       }
 
@@ -164,21 +165,17 @@
 
           //collion right
           if(cX > bricks.w * 0.4){
-            console.log(1);
               ball.v.dX *= -1; 
           }
           //collission left
           else if(abs(cX) > bricks.w * 0.4){
-            console.log(2);
               ball.v.dX *= -1;
           }
           else if(cY > bricks.h * 0.3){
-            console.log(3);
               ball.v.dY *= -1; 
           }
           //collission left
           else if(abs(cY) > bricks.h * 0.3){
-            console.log(4);
               ball.v.dY *= -1;
           } else {
             ball.v.dY *=-1
@@ -195,12 +192,17 @@
       }
 
       function drawBall(){
+        fill(255);
+        stroke(0);
         circle(ball.x - (ball.d / 2),  ball.y - (ball.d/2), ball.d);//x,y, d
       }
 
       function drawBar(){
+        fill(60);
+        stroke(60);
         rect(bar.x - (bar.w/2), bar.y - (bar.h/2), bar.w, bar.h);//x,y, w,h
       }
+
     </script>
   </body>
 </html>
